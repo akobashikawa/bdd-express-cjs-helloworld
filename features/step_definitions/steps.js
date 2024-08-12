@@ -4,14 +4,9 @@ const sinon = require('sinon');
 const puppeteer = require('puppeteer');
 const server = require('../../server');
 
-function helloworldService() {
-    return 'Hello World!';
-}
+const helloworldService = require('../../lib/helloworld-service');
+const helloworldConsole = require('../../lib/helloworld-console')({ helloworldService });
 
-function helloworldConsole() {
-    const message = helloworldService();
-    console.log(message);
-}
 
 Given('User is in services', function () {
     this.serviceResult = '';
@@ -46,7 +41,7 @@ Before({ tags: '@browser' }, async function () {
 });
 
 Given('User is in browser', async function () {
-    
+
 });
 
 When('User open home page', async function () {
