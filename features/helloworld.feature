@@ -15,7 +15,15 @@ Feature: Say Hello World
             Then "Hello World!" is displayed in console
 
         @browser
-        Scenario: User in browser
-            Given User is in browser
+        Scenario: Server is available
+            Given Server is up
+            And User is in browser
             When User open home page
             Then "Hello World!" is displayed in browser
+
+        @browser
+        Scenario: Server is unavailable
+            Given Server is down
+            And User is in browser
+            When User open home page
+            Then Error is displayed in browser

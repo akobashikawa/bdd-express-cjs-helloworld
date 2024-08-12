@@ -1,8 +1,8 @@
 const { Before, After, Given, When, Then } = require('@cucumber/cucumber');
-const { assertThat, is } = require('hamjest');
+const { assertThat, is, not, containsString } = require('hamjest');
 const sinon = require('sinon');
 const puppeteer = require('puppeteer');
-const server = require('../../app');
+const server = require('../../server');
 
 function helloworldService() {
     return 'Hello World!';
@@ -46,11 +46,15 @@ Before({ tags: '@browser' }, async function () {
 });
 
 Given('User is in browser', async function () {
-    await this.page.goto('http://localhost:3000');
+    
 });
 
 When('User open home page', async function () {
-    // Already handled in the Given step
+    try {
+        await this.page.goto('http://localhost:3000');
+    } catch (error) {
+        this.pageError = error;
+    }
 });
 
 Then('{string} is displayed in browser', async function (message) {
@@ -60,5 +64,19 @@ Then('{string} is displayed in browser', async function (message) {
 
 After({ tags: '@browser' }, async function () {
     await this.browser.close();
-    server.close();
+    await server.down();
+});
+
+Given('Server is up', async function () {
+    await server.up();
+});
+
+Given('Server is down', async function () {
+    await server.down();
+})
+
+Then('Error is displayed in browser', function () {
+    assertThat(this.pageError, is(not(undefined)));
+    const errorMessage = this.pageError.message;
+    assertThat(errorMessage, is(containsString('ERR_CONNECTION_REFUSED')));
 });
