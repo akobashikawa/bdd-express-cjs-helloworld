@@ -1,0 +1,16 @@
+{
+  "name": "bdd-express-cjs-helloworld",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "cucumber-js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cucumber/cucumber": "^10.8.0",
+    "hamjest": "^4.1.0"
+  }
+}
