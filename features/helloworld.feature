@@ -14,7 +14,16 @@ Feature: Say Hello World
             When User run the app
             Then "Hello World!" is displayed in console
 
-        Scenario: User in browser
-            Given User is in browser
+        @browser
+        Scenario: Server is available
+            Given Server is up
+            And User is in browser
             When User open home page
             Then "Hello World!" is displayed in browser
+
+        @browser
+        Scenario: Server is unavailable
+            Given Server is down
+            And User is in browser
+            When User open home page
+            Then Error is displayed in browser

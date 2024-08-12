@@ -1,15 +1,12 @@
-const { Before, Given, When, Then } = require('@cucumber/cucumber');
-const { assertThat, is } = require('hamjest');
+const { Before, After, Given, When, Then } = require('@cucumber/cucumber');
+const { assertThat, is, not, containsString } = require('hamjest');
 const sinon = require('sinon');
+const puppeteer = require('puppeteer');
+const server = require('../../server');
 
-function helloworldService() {
-    return 'Hello World!';
-}
+const helloworldService = require('../../lib/helloworld-service');
+const helloworldConsole = require('../../lib/helloworld-console')({ helloworldService });
 
-function helloworldConsole() {
-    const message = helloworldService();
-    console.log(message);
-}
 
 Given('User is in services', function () {
     this.serviceResult = '';
@@ -38,17 +35,43 @@ Then('{string} is displayed in console', function (message) {
 });
 
 
-Given('User is in browser', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+Before({ tags: '@browser' }, async function () {
+    this.browser = await puppeteer.launch();
+    this.page = await this.browser.newPage();
 });
 
-When('User open home page', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+Given('User is in browser', async function () {
+
 });
 
-Then('{string} is displayed in browser', function (string) {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+When('User open home page', async function () {
+    try {
+        await this.page.goto('http://localhost:3000');
+    } catch (error) {
+        this.pageError = error;
+    }
+});
+
+Then('{string} is displayed in browser', async function (message) {
+    const divContent = await this.page.$eval('div.message', el => el.textContent);
+    assertThat(divContent, is(message));
+});
+
+After({ tags: '@browser' }, async function () {
+    await this.browser.close();
+    await server.down();
+});
+
+Given('Server is up', async function () {
+    await server.up();
+});
+
+Given('Server is down', async function () {
+    await server.down();
+})
+
+Then('Error is displayed in browser', function () {
+    assertThat(this.pageError, is(not(undefined)));
+    const errorMessage = this.pageError.message;
+    assertThat(errorMessage, is(containsString('ERR_CONNECTION_REFUSED')));
 });
