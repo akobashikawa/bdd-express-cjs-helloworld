@@ -1,6 +1,8 @@
-const { Before, Given, When, Then } = require('@cucumber/cucumber');
+const { Before, After, Given, When, Then } = require('@cucumber/cucumber');
 const { assertThat, is } = require('hamjest');
 const sinon = require('sinon');
+const puppeteer = require('puppeteer');
+const server = require('../../app');
 
 function helloworldService() {
     return 'Hello World!';
@@ -38,17 +40,25 @@ Then('{string} is displayed in console', function (message) {
 });
 
 
-Given('User is in browser', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+Before({ tags: '@browser' }, async function () {
+    this.browser = await puppeteer.launch();
+    this.page = await this.browser.newPage();
 });
 
-When('User open home page', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+Given('User is in browser', async function () {
+    await this.page.goto('http://localhost:3000');
 });
 
-Then('{string} is displayed in browser', function (string) {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+When('User open home page', async function () {
+    // Already handled in the Given step
+});
+
+Then('{string} is displayed in browser', async function (message) {
+    const content = await this.page.content();
+    assertThat(content, is(`<html><head></head><body><h1>${message}</h1></body></html>`));
+});
+
+After({ tags: '@browser' }, async function () {
+    await this.browser.close();
+    server.close();
 });

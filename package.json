@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "cypress:open": "cypress open",
     "test": "cucumber-js"
   },
   "keywords": [],
@@ -13,6 +12,10 @@
   "devDependencies": {
     "@cucumber/cucumber": "^10.8.0",
     "hamjest": "^4.1.0",
+    "puppeteer": "^23.0.2",
     "sinon": "^18.0.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
   }
 }

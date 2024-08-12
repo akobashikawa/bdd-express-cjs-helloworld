@@ -14,6 +14,7 @@ Feature: Say Hello World
             When User run the app
             Then "Hello World!" is displayed in console
 
+        @browser
         Scenario: User in browser
             Given User is in browser
             When User open home page
