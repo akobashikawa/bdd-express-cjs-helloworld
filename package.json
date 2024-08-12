@@ -4,13 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "cypress:open": "cypress open",
     "test": "cucumber-js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "@cucumber/cucumber": "^10.8.0",
-    "hamjest": "^4.1.0"
+    "hamjest": "^4.1.0",
+    "sinon": "^18.0.0"
   }
 }
