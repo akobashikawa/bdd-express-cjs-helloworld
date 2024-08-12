@@ -41,4 +41,8 @@ const down = () => {
     });
 };
 
-module.exports = { up, down };
+const status = () => {
+    return serverStatus;
+};
+
+module.exports = { up, down, status };
