@@ -1,8 +1,11 @@
 const express = require('express');
 const app = express();
 
+const helloworldService = require('./lib/helloworld-service');
+
 app.get('/', (req, res) => {
-    res.send('<h1>Hello World!</h1>');
+    const message = helloworldService();
+    res.send(`<div class="message">${message}</div>`);
 });
 
 let server;

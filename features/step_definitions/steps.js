@@ -53,8 +53,8 @@ When('User open home page', async function () {
 });
 
 Then('{string} is displayed in browser', async function (message) {
-    const content = await this.page.content();
-    assertThat(content, is(`<html><head></head><body><h1>${message}</h1></body></html>`));
+    const divContent = await this.page.$eval('div.message', el => el.textContent);
+    assertThat(divContent, is(message));
 });
 
 After({ tags: '@browser' }, async function () {
