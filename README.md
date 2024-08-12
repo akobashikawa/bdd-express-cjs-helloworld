@@ -1,3 +1,3 @@
-# BDD con ExpressJS CommonJS
+# Learning BDD - ExpressJS (CommonJS)
 
-- ExpressJS CommonJS usa `require`
+- ExpressJS CommonJS uses `require`
